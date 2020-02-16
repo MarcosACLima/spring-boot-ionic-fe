@@ -22,10 +22,7 @@ export class CategoriasPage {
     this.categoriaService.listarTudo().subscribe(resposta => {
         this.itens = resposta;
     },  
-        erro => {
-          console.log(erro);
-    });
+        error => {});
   }
 
 } 
-
