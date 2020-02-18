@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content padding>
-  <!-- interpolacao -->
-  {{ email }}
+  <ion-avatar>
+    <!-- ? operador de navegacao segura do Angular-->
+    <img class="circulo" [src]="cliente?.imagemUrl || 'assets/imgs/avatar-blank.png'">
+  </ion-avatar>
+    <h2 text-center >{{cliente?.nome}}</h2>
+    <p text-center >{{cliente?.email}}</p>
+  <!-- interpolacao   {{ email }}  -->
 </ion-content>
