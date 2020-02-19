@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Rx';
 export class ErroInterceptor implements HttpInterceptor {
 
     intercept(requisicao : HttpRequest<any>, proximo: HttpHandler): Observable<HttpEvent<any>> {
-        console.log("Passou no interceptor")
         return proximo.handle(requisicao).catch((error, capturado) => {
 
             let erroObj = error;
