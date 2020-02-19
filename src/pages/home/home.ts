@@ -42,4 +42,8 @@ export class HomePage {
     error => {});
   }
 
+  inscreverSe() {
+    this.navCtrl.push('InscreverSePage');
+  }
+
 }
