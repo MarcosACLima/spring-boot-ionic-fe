@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CidadeService } from '../../services/domain/cidade.service';
 import { EstadoService } from '../../services/domain/estado.service';
 import { EstadoDTO } from '../../models/estado.dto';
 import { CidadeDTO } from '../../models/cidade.dto';
+import { ClienteService } from '../../services/domain/cliente.service';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,8 @@ export class InscreverSePage {
   estados: EstadoDTO[];
   cidades: CidadeDTO[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public cidadeService: CidadeService, public estadoService: EstadoService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public cidadeService: CidadeService, public estadoService: EstadoService, public clienteService: ClienteService, public alertaCtrl: AlertController) {
+
     this.formGroup = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(120)]],
       email: ['', [Validators.required, Validators.email]],
@@ -57,7 +59,18 @@ export class InscreverSePage {
   }
 
   inscreverUsuario() {
-    console.log("enviou o formulario");
+    this.clienteService.inserir(this.formGroup.value).subscribe( repsosta => {this.mostrarInserirOK();
+    },
+    error => {});
+  }
+
+  mostrarInserirOK() {
+    let alerta =this.alertaCtrl.create({title: 'Sucesso!', message: 'Cadastro realizado com sucesso', enableBackdropDismiss: false, buttons: [{
+      text: 'Ok',
+      handler: () => { this.navCtrl.pop();}
+    }
+    ]});
+    alerta.present();
   }
 
 }
