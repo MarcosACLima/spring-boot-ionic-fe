@@ -1,3 +1,4 @@
 export const STORAGE_KEYS = {
-    usuarioLogado: "usuarioLogado"
+    usuarioLogado: "usuarioLogado",
+    carrinho: "chaveCarrinho"
 }

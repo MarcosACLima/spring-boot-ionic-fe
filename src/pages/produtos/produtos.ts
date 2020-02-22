@@ -28,7 +28,7 @@ export class ProdutosPage {
   carregarImagemUrls() {
     for(var i = 0; i < this.itens.length; i++) {
       let item = this.itens[i];
-      this.produtoService.retornarImagemPequenDoBucket(item.id).subscribe(resposta => 
+      this.produtoService.retornarImagemPequenaDoBucket(item.id).subscribe(resposta => 
         { item.imagemUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.id}-small.jpg`;
         },
       error => {});
