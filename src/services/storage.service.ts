@@ -27,18 +27,18 @@ export class StorageService {
 
     getCarrinho() : Carrinho {
         let carrinho = localStorage.getItem(STORAGE_KEYS.carrinho);
-        if (carrinho == null) {
-            return null;
-        } else {
+        if (carrinho != null) {
             return JSON.parse(carrinho);
+        } else {
+            return null;
         }
     }
 
     setCarrinho(carrinho : Carrinho) {
-        if (carrinho == null) {
-            localStorage.removeItem(STORAGE_KEYS.carrinho);
-        } else {
+        if (carrinho != null) {
             localStorage.setItem(STORAGE_KEYS.carrinho, JSON.stringify(carrinho));
+        } else {
+            localStorage.removeItem(STORAGE_KEYS.carrinho);
         }
     }
 

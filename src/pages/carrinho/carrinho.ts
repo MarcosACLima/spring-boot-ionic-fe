@@ -29,7 +29,7 @@ export class CarrinhoPage {
       this.produtoService.retornarImagemPequenaDoBucket(item.produto.id).subscribe( resposta => {
         item.produto.imagemUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.produto.id}-small.jpg`;
       },
-      error => {})
+      error => {});
     }
   }
 

@@ -33,7 +33,7 @@ export class ProdutoDetalhePage {
     error => {});
   }
 
-  addNoCarrinho(produto : ProdutoDTO) {
+  addNoCarrinho(produto: ProdutoDTO) {
     this.carrinhoService.addProduto(produto);
     this.navCtrl.setRoot('CarrinhoPage');
   }
