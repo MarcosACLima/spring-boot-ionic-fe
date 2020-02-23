@@ -4,6 +4,7 @@ import { ItemCarrinho } from '../../models/item-carrinho';
 import { ProdutoService } from '../../services/domain/produto.service';
 import { API_CONFIG } from '../../config/api.config';
 import { CarrinhoService } from '../../services/domain/carrinho.service';
+import { ProdutoDTO } from '../../models/produto.dto';
 
 @IonicPage()
 @Component({
@@ -31,6 +32,26 @@ export class CarrinhoPage {
       },
       error => {});
     }
+  }
+
+  removerItem(produto: ProdutoDTO) {
+    this.itens = this.carrinhoService.removerProduto(produto).itens;
+  }
+
+  incrementarQuantidade(produto: ProdutoDTO) {
+    this.itens = this.carrinhoService.incrementarQuantidade(produto).itens;
+  }
+
+  decrementarQuantidade(produto: ProdutoDTO) {
+    this.itens = this.carrinhoService.decrementarQuantidade(produto).itens;
+  }
+
+  valorTotal() : number {
+    return this.carrinhoService.valorTotal();
+  }
+
+  continuarComprando() {
+    this.navCtrl.setRoot('CategoriasPage');
   }
 
 }

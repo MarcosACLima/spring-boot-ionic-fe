@@ -20,7 +20,7 @@ export class ProdutoService {
 
     retornarImagemPequenaDoBucket(id : string) : Observable<any> {
         let url = `${API_CONFIG.bucketBaseUrl}/prod${id}-small.jpg`
-        return this.http.get(url, {responseType : 'blob'})
+        return this.http.get(url, {responseType : 'blob'});
     }
 
     retornarImagemDoBucket(id: string) : Observable<any> {

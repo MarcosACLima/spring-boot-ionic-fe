@@ -5,13 +5,14 @@ import { API_CONFIG } from "../config/api.config";
 import { UsuarioLogado } from "../models/usuario_logado";
 import { StorageService } from "./storage.service";
 import { JwtHelper } from 'angular2-jwt';
+import { CarrinhoService } from "./domain/carrinho.service";
 
 @Injectable()
 export class AuthService {
 
     jwtAjuda: JwtHelper = new JwtHelper();
 
-    constructor(public http: HttpClient, public storage: StorageService) {
+    constructor(public http: HttpClient, public storage: StorageService, public carrinhoService: CarrinhoService) {
     }
 
     autenticar(credenciais : CredenciaisDTO) {
@@ -29,6 +30,7 @@ export class AuthService {
             email: this.jwtAjuda.decodeToken(tok).sub
         };
         this.storage.setUsuarioLogado(usuario);
+        this.carrinhoService.criarOuLimparCarrinho();
     }
 
     // metodo de logout
