@@ -21,7 +21,7 @@ export class PerfilPage {
     let usuarioLogado = this.storage.getUsuarioLogado();
     if (usuarioLogado && usuarioLogado.email) {
       this.clienteService.buscarPorEmail(usuarioLogado.email)
-      .subscribe(resposta => { this.cliente = resposta;
+      .subscribe(resposta => { this.cliente = resposta as ClienteDTO;
         this.getImageExiste();
       },
       error => {
