@@ -6,6 +6,7 @@ import { CarrinhoService } from '../../services/domain/carrinho.service';
 import { EnderecoDTO } from '../../models/endereco.dto';
 import { ClienteService } from '../../services/domain/cliente.service';
 import { ClienteDTO } from '../../models/cliente.dto';
+import { PedidoService } from '../../services/domain/pedido.service';
 
 @IonicPage()
 @Component({
@@ -19,7 +20,7 @@ export class ConfirmacaoPedidoPage {
   cliente: ClienteDTO;
   endereco: EnderecoDTO;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public carrinhoService: CarrinhoService, public clienteService: ClienteService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public carrinhoService: CarrinhoService, public clienteService: ClienteService, public pedidoService: PedidoService) {
 
     this.pedido = this.navParams.get('pedido');
   }
@@ -43,6 +44,23 @@ export class ConfirmacaoPedidoPage {
 
   valorTotal() {
     return this.carrinhoService.valorTotal();
+  }
+
+  // checkout
+  verificacaoDeSaida() {
+    this.pedidoService.inserir(this.pedido).subscribe(resposta => {
+      this.carrinhoService.criarOuLimparCarrinho();
+      console.log(resposta.headers.get('location'));
+    },
+    error => {
+      if(error.status == 403) {
+        this.navCtrl.setRoot('HomePage');
+      }
+    });
+  }
+
+  voltar() {
+    this.navCtrl.setRoot('CarrinhoPage');
   }
 
 }
