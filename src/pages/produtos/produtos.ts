@@ -17,6 +17,10 @@ export class ProdutosPage {
   }
 
   ionViewDidLoad() {
+   this.carregarDados();
+  }
+
+  carregarDados() {
     let categoria_id = this.navParams.get('categoria_id');
     let carregador = this.carregamentoAtual(); // iniciar loading
     this.produtoService.buscarPorCategoria(categoria_id).subscribe( resposta => {
@@ -26,7 +30,7 @@ export class ProdutosPage {
     },
     error => {
       carregador.dismiss();
-    })
+    });
   }
 
   carregarImagemUrls() {
@@ -49,6 +53,13 @@ export class ProdutosPage {
     });
     carregador.present();
     return carregador;
+  }
+
+  fazerAtualizacao(atualizar) {
+    this.carregarDados();
+    setTimeout(() => {
+      atualizar.complete();
+    }, 1000);
   }
 
 }
