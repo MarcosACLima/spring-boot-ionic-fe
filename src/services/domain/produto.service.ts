@@ -14,8 +14,8 @@ export class ProdutoService {
         return this.http.get<ProdutoDTO>(`${API_CONFIG.baseUrl}/produtos/${produto_id}`);
     }
 
-    buscarPorCategoria(categoria_id : string) {
-        return this.http.get(`${API_CONFIG.baseUrl}/produtos/?categorias=${categoria_id}`);
+    buscarPorCategoria(categoria_id : string, pagina : number = 0, quantLinhas: number = 24) {
+        return this.http.get(`${API_CONFIG.baseUrl}/produtos/?categorias=${categoria_id}&pagina=${pagina}&quantLinhas=${quantLinhas}`); // nome das &variaveis igual ao BE classe ProdutoResource
     }
 
     retornarImagemPequenaDoBucket(id : string) : Observable<any> {

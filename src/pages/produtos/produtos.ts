@@ -11,7 +11,8 @@ import { API_CONFIG } from '../../config/api.config';
 })
 export class ProdutosPage {
 
-  itens: ProdutoDTO[];
+  itens: ProdutoDTO[] = [];
+  pagina : number = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public produtoService: ProdutoService, public controladorCarregamento: LoadingController) {
   }
@@ -23,18 +24,22 @@ export class ProdutosPage {
   carregarDados() {
     let categoria_id = this.navParams.get('categoria_id');
     let carregador = this.carregamentoAtual(); // iniciar loading
-    this.produtoService.buscarPorCategoria(categoria_id).subscribe( resposta => {
-      this.itens = resposta['content'];
+    this.produtoService.buscarPorCategoria(categoria_id, this.pagina, 10).subscribe( resposta => {
+      let inicio = this.itens.length;
+      this.itens = this.itens.concat(resposta['content']); // concatenar a resposta
+      let fim = this.itens.length - 1;
       carregador.dismiss(); // dispensar loading
-      this.carregarImagemUrls();
+      console.log(this.pagina);
+      console.log(this.itens);
+      this.carregarImagemUrls(inicio, fim);
     },
     error => {
       carregador.dismiss();
     });
   }
 
-  carregarImagemUrls() {
-    for(var i = 0; i < this.itens.length; i++) {
+  carregarImagemUrls(inicio: number, fim: number) {
+    for(var i = inicio; i < fim; i++) {
       let item = this.itens[i];
       this.produtoService.retornarImagemPequenaDoBucket(item.id).subscribe(resposta => 
         { item.imagemUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.id}-small.jpg`;
@@ -56,9 +61,19 @@ export class ProdutosPage {
   }
 
   fazerAtualizacao(atualizar) {
+    this.pagina = 0;
+    this.itens = [];
     this.carregarDados();
     setTimeout(() => {
       atualizar.complete();
+    }, 1000);
+  }
+
+  carregarMaisDados(scrollInfinito) {
+    this.pagina++;
+    this.carregarDados();
+    setTimeout(() => {
+      scrollInfinito.complete();
     }, 1000);
   }
 

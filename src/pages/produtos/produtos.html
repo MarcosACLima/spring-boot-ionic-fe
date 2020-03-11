@@ -25,5 +25,10 @@
       <p>{{item.preco | currency}}</p>
     </button>
   </ion-list>
+
+  <!-- infinite-scroll dever ultimo elemnto do ion-content -->
+  <ion-infinite-scroll (ionInfinite)="carregarMaisDados($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
     
 </ion-content>
