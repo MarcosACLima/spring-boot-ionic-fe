@@ -22,17 +22,22 @@ export class PerfilPage {
   }
 
   ionViewDidLoad() {
+    this.carregarDados();
+  }
+
+  carregarDados() {
     let usuarioLogado = this.storage.getUsuarioLogado();
     if (usuarioLogado && usuarioLogado.email) {
       this.clienteService.buscarPorEmail(usuarioLogado.email)
-      .subscribe(resposta => { this.cliente = resposta as ClienteDTO;
-        this.getImageExiste();
-      },
-      error => {
-        if(error.status == 403) {
-          this.navCtrl.setRoot('HomePage');
-        }
-      });
+        .subscribe(resposta => {
+        this.cliente = resposta as ClienteDTO;
+          this.getImageExiste();
+        },
+          error => {
+            if (error.status == 403) {
+              this.navCtrl.setRoot('HomePage');
+            }
+          });
     }
     else {
       this.navCtrl.setRoot('HomePage');
@@ -41,10 +46,10 @@ export class PerfilPage {
 
   getImageExiste() {
     this.clienteService.getImagemDoBucket(this.cliente.id)
-    .subscribe(resposta => {
-      this.cliente.imagemUrl = `${API_CONFIG.bucketBaseUrl}/cp${this.cliente.id}.jpg`;
-    },
-    error =>{})
+      .subscribe(resposta => {
+        this.cliente.imagemUrl = `${API_CONFIG.bucketBaseUrl}/cp${this.cliente.id}.jpg`;
+      },
+        error => { })
   }
 
   getCameraPicture() {
@@ -58,10 +63,23 @@ export class PerfilPage {
     }
 
     this.camera.getPicture(options).then((imageData) => {
-     this.picture = 'data:image/png;base64,' + imageData;
-     this.cameraOn = false;
+      this.picture = 'data:image/png;base64,' + imageData;
+      this.cameraOn = false;
     }, (error) => {
     });
+  }
+
+  enviarFoto() {
+    this.clienteService.uploadFoto(this.picture).subscribe(
+      resposta => {
+        this.picture = null;
+        this.carregarDados();
+      },
+      error => {});
+  }
+
+  cancelarFoto() {
+    this.picture = null;
   }
 
 }
