@@ -66,6 +66,7 @@ export class PerfilPage {
       this.picture = 'data:image/png;base64,' + imageData;
       this.cameraOn = false;
     }, (error) => {
+      this.cameraOn = false;
     });
   }
 
@@ -84,6 +85,7 @@ export class PerfilPage {
       this.picture = 'data:image/png;base64,' + imageData;
       this.cameraOn = false;
     }, (error) => {
+      this.cameraOn = false;
     });
   }
 
