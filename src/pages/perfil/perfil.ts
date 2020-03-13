@@ -5,6 +5,7 @@ import { ClienteDTO } from '../../models/cliente.dto';
 import { ClienteService } from '../../services/domain/cliente.service';
 import { API_CONFIG } from '../../config/api.config';
 import { CameraOptions, Camera } from '@ionic-native/camera/ngx';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage()
 @Component({
@@ -17,8 +18,11 @@ export class PerfilPage {
 
   picture: string;
   cameraOn: boolean = false;
+  imagemPerfil;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: StorageService, public clienteService: ClienteService, public camera: Camera) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: StorageService, public clienteService: ClienteService, public camera: Camera, public sanitizer: DomSanitizer) {
+
+    this.imagemPerfil = 'assets/imgs/avatar-blank.png';
   }
 
   ionViewDidLoad() {
@@ -48,8 +52,24 @@ export class PerfilPage {
     this.clienteService.getImagemDoBucket(this.cliente.id)
       .subscribe(resposta => {
         this.cliente.imagemUrl = `${API_CONFIG.bucketBaseUrl}/cp${this.cliente.id}.jpg`;
+        this.blobToDataURL(resposta).then(dataUrl => {
+          let str : string = dataUrl as string;
+          this.imagemPerfil = this.sanitizer.bypassSecurityTrustUrl(str);
+        });
       },
-        error => { })
+        error => {
+          this.imagemPerfil = 'assets/imgs/avatar-blank.png';
+        })
+  }
+
+  // Converter Blob para Base64: https://gist.github.com/frumbert/3bf7a68ffa2ba59061bdcfc016add9ee
+  blobToDataURL(blob) {
+    return new Promise((fulfill, reject) => {
+        let reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = (e) => fulfill(reader.result);
+        reader.readAsDataURL(blob);
+    });
   }
 
   getCameraPicture() {
@@ -93,7 +113,7 @@ export class PerfilPage {
     this.clienteService.uploadFoto(this.picture).subscribe(
       resposta => {
         this.picture = null;
-        this.carregarDados();
+        this.getImageExiste();
       },
       error => {});
   }
